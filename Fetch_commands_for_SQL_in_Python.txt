@@ -1,0 +1,6 @@
+cursor.fetchall()
+bir sorgu sonucunun tüm satırlarını getirir. Tüm satırları bir tuple listesi olarak döndürür. Alınacak kayıt yoksa boş bir liste döndürülür.
+cursor.fetchmany(size)
+size değişkeni tarafından belirtilen satır sayısını döndürür. Tekrar tekrar çağrıldığında, bu yöntem bir sorgu sonucunun sonraki satır kümesini getirir ve bir tuple listesi döndürür.
+cursor.fetchone()
+tek bir kayıt döndürür. satır yoksa None döndürür.

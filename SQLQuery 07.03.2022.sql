@@ -133,3 +133,48 @@ GROUP BY
     )
 ORDER BY Brand, Category;
 
+/*Generate different grouping variations that can be produced with the brand and category columns using 'ROLLUP'.
+-- Calculate sum total_sales_price
+--brand, category, model_year sütunlarý için Rollup kullanarak total sales hesaplamasý yapýn.
+--üç sütun için 4 farklý gruplama varyasyonu üretiyor*/
+SELECT Brand, Category, Model_Year, SUM(total_sales_price) TOTAL
+FROM sale.sales_summary
+GROUP BY
+	ROLLUP (Brand, Category, Model_Year)
+ORDER BY Model_Year, Category
+
+
+/*ROLL UP*/
+SELECT Brand, Category, Model_Year, SUM(total_sales_price)
+FROM sale.sales_summary
+GROUP BY
+	CUBE (Brand, Category, Model_Year)
+ORDER BY Brand, Category
+
+/*PIVOT*/
+--Write a query that returns total sales amount by categories and model years.
+
+SELECT *
+FROM
+(
+SELECT Category, total_sales_price
+FROM sale.sales_summary
+) A
+PIVOT
+(
+	SUM(total_sales_price)
+	FOR Category
+	IN
+	([Audio & Video Accessories]
+	,[Bluetooth]
+	,[Car Electronics]
+	,[Computer Accessories]
+	,[Earbud]
+	,[gps]
+	,[Hi-Fi Systems]
+	,[Home Theater]
+	,[mp4 player]
+	,[Receivers Amplifiers]
+	,[Speakers]
+	,[Televisions & Accessories])
+) AS PIVOT_TABLE

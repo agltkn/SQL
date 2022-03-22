@@ -39,7 +39,7 @@ VALUES
 
 SELECT * FROM t_date_time
 
-SELECT CONVERT(VARCHAR, GETDATE(),7)
+SELECT CONVERT(VARCHAR, GETDATE(),3)
 
 SELECT CONVERT(DATE, '25 OCT 21', 6)
 
@@ -56,8 +56,8 @@ SELECT	A_date,
 		MONTH(A_date),
 		YEAR (A_date),
 		A_time,
-		DATEPART (NANOSECOND, A_time),
-		DATEPART (MONTH, A_date)
+		DATEPART (NANOSECOND, A_time) [DatePart_Nano],
+		DATEPART (MONTH, A_date) [DatePart]
 FROM	t_date_time
 
 ---DATEDIFF---
@@ -77,7 +77,7 @@ SELECT	A_date,
 FROM	t_date_time
 
 SELECT shipped_date, order_date,
-		DATEDIFF (DAY, order_date, shipped_date) [DIFF]
+		DATEDIFF (DAY, shipped_date, order_date) [DIFF]
 FROM sale.orders
 
 
@@ -94,7 +94,9 @@ FROM [sale].[orders]
 
 
 -- EOMONTH
-SELECT EOMONTH(order_date) LAST_DAY, order_date, EOMONTH(order_date, 2) after_2
+SELECT	EOMONTH(order_date) LAST_DAY,
+		order_date,
+		EOMONTH(order_date, 2) after_2
 FROM [sale].[orders]
 
 -- ISDATE
@@ -133,8 +135,7 @@ SELECT UPPER('character')
 SELECT UPPER(LEFT('character',1))
 SELECT UPPER(LEFT('character',1)) + LOWER(RIGHT('character',8))
 SELECT UPPER(LEFT('character',1)) + LOWER(RIGHT('character',LEN ('character')-1))
-
-SELECT * FROM STRING_SPLIT ('John, Jeremy, Jack, George', ',')
+SELECT * FROM string_split ('John, Jeremy, Jack, George', ',')
 
 ----- LTRIM/ RTRIM/ TRIM-----
 
@@ -162,10 +163,10 @@ SELECT STR(5454, 10, 5)
 
 SELECT STR(133215.654645, 11, 3)
 
------ CAST/ CONVERT/ COALESCE/ NULLIF/ ROUNF -----
+----- CAST/ CONVERT/ COALESCE/ NULLIF/ ROUND -----
 
 SELECT CAST (456123 AS CHAR)
-
+      5454
 SELECT CAST (456.123 AS INT)
 
 
@@ -173,7 +174,7 @@ SELECT CONVERT (INT, 30.60)
 
 SELECT CONVERT (VARCHAR(10), '2020-10-10')
 
-SELECT COALESCE (NULL, NULL, 'Hi', 'Hello', NULL) Result;
+SELECT COALESCE (NULL, NULL,'Hello', NULL) Result;
 
 SELECT NULLIF (10,10)
 
@@ -185,10 +186,10 @@ SELECT NULLIF (10,10)
 
 SELECT NULLIF('Hello', 'Hi') Result;
 
-SELECT ROUND (432.368, 2, 0) -- 0 YUKARI, 1 AÞAÐI YUVARLAR--
+SELECT ROUND (432.368157, 2, 0) -- 0 (DEFAULT, NE GEREKÝYORSA ONU YAPIYOR), 1 AÞAÐI YUVARLAR--
 
-SELECT ROUND (432.368, 1, 0)
+SELECT ROUND (432.368157, 1, 0)
 
-SELECT ROUND (432.368, 2, 1)
+SELECT ROUND (432.368157, 2, 1)
 
-SELECT ROUND (432.368, 2)
+SELECT ROUND (432.368157, 2)

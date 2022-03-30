@@ -58,7 +58,7 @@ FROM
 					AND P.brand_id = B.brand_id
 ) TBL
 
-SELECT	DISTINCT category_name,
+SELECT	DISTINCT category_name, brand_name,
 		MAX(Brand_Value) OVER(PARTITION BY category_name) MKS
 FROM
 (
@@ -82,6 +82,26 @@ FROM
 
 		
 		
+SELECT *
+FROM
+(
+			SELECT	DISTINCT category_name, brand_name,
+					ROW_NUMBER() OVER(PARTITION BY category_name ORDER BY Brand_Value DESC) [row_number]
+			FROM
+			(
+					SELECT DISTINCT	C.category_name,
+									B.brand_name,
+									SUM(O.quantity*(1-O.discount)*O.list_price)
+									OVER(PARTITION BY C.category_name,B.Brand_name) Brand_Value
+					FROM			product.category	C,
+									product.product		P,
+									sale.order_item		O,
+									product.brand		B
+					WHERE			C.category_id = P.category_id 
+								AND P.product_id = O.product_id
+								AND P.brand_id = B.brand_id
+			) TBL
+) TBL_2
 
-
-
+WHERE [row_number] < 3
+ORDER BY category_name,[row_number]
